@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BMI Calculator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="bg-zinc-50 min-h-screen flex items-center justify-center font-[Inter]"
+  >
+    <div
+      class="bg-white p-8 rounded-3xl shadow-xl w-full max-w-sm border border-zinc-100"
+    >
+      <h1 class="text-2xl font-bold text-zinc-800 text-center mb-6">
+        BMI Calculator
+      </h1>
+
+      <div class="space-y-4">
+        <div class="relative">
+          <label
+            class="text-xs font-semibold text-zinc-500 uppercase tracking-wider ml-1"
+            >Height (cm)</label
+          >
+          <input
+            type="number"
+            id="height"
+            placeholder="175"
+            class="w-full mt-1 bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-zinc-800 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+          />
+        </div>
+
+        <div class="relative">
+          <label
+            class="text-xs font-semibold text-zinc-500 uppercase tracking-wider ml-1"
+            >Weight (kg)</label
+          >
+          <input
+            type="number"
+            id="weight"
+            placeholder="70"
+            class="w-full mt-1 bg-zinc-50 border border-zinc-200 rounded-xl px-4 py-3 text-zinc-800 font-semibold focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition"
+          />
+        </div>
+
+        <button
+          onclick="calculateBMI()"
+          class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-xl transition shadow-lg shadow-blue-500/30 active:scale-[0.98]"
+        >
+          Calculate
+        </button>
+      </div>
+
+      <div
+        id="resultBox"
+        class="mt-8 p-6 rounded-2xl bg-zinc-50 border border-zinc-100 text-center transition-all duration-300"
+      >
+        <p class="text-zinc-400 text-sm mb-1">Your BMI Score</p>
+        <div id="bmiValue" class="text-4xl font-extrabold text-zinc-800">
+          --.-
+        </div>
+        <div
+          id="bmiStatus"
+          class="mt-2 inline-block px-3 py-1 rounded-full text-xs font-semibold bg-zinc-200 text-zinc-500"
+        >
+          Enter details
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function calculateBMI() {
+        const h = parseFloat(document.getElementById("height").value);
+        const w = parseFloat(document.getElementById("weight").value);
+        const resultBox = document.getElementById("resultBox");
+        const bmiVal = document.getElementById("bmiValue");
+        const bmiStat = document.getElementById("bmiStatus");
+
+        if (!h || !w || h <= 0 || w <= 0) return;
+
+        const bmi = (w / (h / 100) ** 2).toFixed(1);
+        bmiVal.innerText = bmi;
+
+        let colorClass = "bg-zinc-200 text-zinc-500";
+        let status = "";
+
+        if (bmi < 18.5) {
+          status = "Underweight";
+          colorClass = "bg-yellow-100 text-yellow-700";
+        } else if (bmi < 25) {
+          status = "Normal";
+          colorClass = "bg-green-100 text-green-700";
+        } else if (bmi < 30) {
+          status = "Overweight";
+          colorClass = "bg-orange-100 text-orange-700";
+        } else {
+          status = "Obese";
+          colorClass = "bg-red-100 text-red-700";
+        }
+
+        bmiStat.className = `mt-2 inline-block px-4 py-1.5 rounded-full text-sm font-bold ${colorClass}`;
+        bmiStat.innerText = status;
+      }
+    </script>
+  </body>
+</html>

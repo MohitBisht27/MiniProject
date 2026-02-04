@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Stopwatch</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body
+    class="bg-black min-h-screen flex items-center justify-center font-[Inter] p-4"
+  >
+    <div class="w-full max-w-sm">
+      <div
+        class="bg-zinc-900 border border-zinc-800 rounded-[2.5rem] p-8 shadow-2xl relative"
+      >
+        <!-- Time Display -->
+        <div class="h-64 flex flex-col items-center justify-center relative">
+          <div
+            class="absolute w-56 h-56 rounded-full border-2 border-zinc-800 animate-pulse opacity-20"
+          ></div>
+          <div
+            id="display"
+            class="font-['JetBrains_Mono'] text-6xl text-white font-bold tracking-tighter"
+          >
+            00:00
+          </div>
+          <div
+            id="millis"
+            class="font-['JetBrains_Mono'] text-2xl text-emerald-400 font-medium mt-2"
+          >
+            .00
+          </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="grid grid-cols-2 gap-4 mb-6">
+          <button
+            id="startBtn"
+            onclick="toggleTimer()"
+            class="bg-emerald-500 hover:bg-emerald-600 text-black font-bold py-4 rounded-2xl transition shadow-lg shadow-emerald-900/50"
+          >
+            Start
+          </button>
+          <button
+            onclick="reset()"
+            class="bg-zinc-800 hover:bg-zinc-700 text-white font-semibold py-4 rounded-2xl transition"
+          >
+            Reset
+          </button>
+        </div>
+        <button
+          onclick="lap()"
+          class="w-full bg-zinc-800 hover:bg-zinc-700 text-zinc-400 font-medium py-3 rounded-xl text-sm mb-6 transition"
+        >
+          Record Lap
+        </button>
+
+        <!-- Laps -->
+        <div class="border-t border-zinc-800 pt-4">
+          <h3
+            class="text-zinc-500 text-xs font-bold uppercase tracking-wider mb-3"
+          >
+            Laps
+          </h3>
+          <div
+            id="laps"
+            class="space-y-2 max-h-32 overflow-y-auto pr-2 custom-scrollbar"
+          >
+            <!-- JS Injected -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let timer = null;
+      let startTime = 0;
+      let elapsedTime = 0;
+      let isRunning = false;
+
+      function toggleTimer() {
+        const btn = document.getElementById("startBtn");
+        if (!isRunning) {
+          startTime = Date.now() - elapsedTime;
+          timer = setInterval(update, 10);
+          btn.innerText = "Stop";
+          btn.className =
+            "bg-rose-500 hover:bg-rose-600 text-white font-bold py-4 rounded-2xl transition shadow-lg shadow-rose-900/50";
+          isRunning = true;
+        } else {
+          clearInterval(timer);
+          btn.innerText = "Resume";
+          btn.className =
+            "bg-emerald-500 hover:bg-emerald-600 text-black font-bold py-4 rounded-2xl transition shadow-lg shadow-emerald-900/50";
+          isRunning = false;
+        }
+      }
+
+      function update() {
+        const now = Date.now();
+        elapsedTime = now - startTime;
+        formatTime(elapsedTime);
+      }
+
+      function formatTime(ms) {
+        let mins = Math.floor(ms / (1000 * 60));
+        let secs = Math.floor((ms / 1000) % 60);
+        let mils = Math.floor((ms % 1000) / 10);
+
+        document.getElementById("display").innerText =
+          `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+        document.getElementById("millis").innerText =
+          `.${String(mils).padStart(2, "0")}`;
+      }
+
+      function reset() {
+        clearInterval(timer);
+        elapsedTime = 0;
+        isRunning = false;
+        formatTime(0);
+        document.getElementById("laps").innerHTML = "";
+        const btn = document.getElementById("startBtn");
+        btn.innerText = "Start";
+        btn.className =
+          "bg-emerald-500 hover:bg-emerald-600 text-black font-bold py-4 rounded-2xl transition shadow-lg shadow-emerald-900/50";
+      }
+
+      function lap() {
+        if (!isRunning) return;
+        const div = document.createElement("div");
+        div.className =
+          "flex justify-between text-zinc-400 font-mono text-sm border-b border-zinc-800 pb-1";
+        let mins = Math.floor(elapsedTime / (1000 * 60));
+        let secs = Math.floor((elapsedTime / 1000) % 60);
+        let mils = Math.floor((elapsedTime % 1000) / 10);
+        div.innerHTML = `<span>Lap ${document.getElementById("laps").children.length + 1}</span> <span>${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}.${String(mils).padStart(2, "0")}</span>`;
+        document.getElementById("laps").prepend(div);
+      }
+    </script>
+  </body>
+</html>

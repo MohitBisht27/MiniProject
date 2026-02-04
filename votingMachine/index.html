@@ -1,0 +1,407 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Voting Machine</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body
+    class="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 min-h-screen font-sans p-4 md:p-8"
+  >
+    <div class="max-w-4xl mx-auto">
+      <div class="text-center mb-10">
+        <div
+          class="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm px-4 py-2 rounded-full mb-4"
+        >
+          <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+          <span class="text-green-400 text-sm font-medium">Live Voting</span>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-bold text-white mb-2">
+          Voting Machine
+        </h1>
+        <p class="text-purple-200/70">Cast your vote for your favorite team</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
+        <div
+          class="group bg-gradient-to-br from-blue-500/20 to-blue-600/10 backdrop-blur-sm border border-blue-500/30 rounded-2xl p-6 text-center hover:border-blue-400 hover:scale-105 transition-all duration-300"
+        >
+          <div
+            class="w-16 h-16 bg-blue-500/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-500/30 transition"
+          >
+            <span class="text-3xl">🔵</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-1">Team Alpha</h3>
+          <p class="text-blue-300/70 text-sm mb-4">Innovation Leaders</p>
+          <button
+            onclick="vote(0)"
+            class="w-full bg-blue-500 hover:bg-blue-600 text-white font-semibold py-3 rounded-xl transition shadow-lg shadow-blue-500/30 active:scale-95"
+          >
+            Vote
+          </button>
+        </div>
+
+        <div
+          class="group bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 backdrop-blur-sm border border-emerald-500/30 rounded-2xl p-6 text-center hover:border-emerald-400 hover:scale-105 transition-all duration-300"
+        >
+          <div
+            class="w-16 h-16 bg-emerald-500/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-emerald-500/30 transition"
+          >
+            <span class="text-3xl">🟢</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-1">Team Beta</h3>
+          <p class="text-emerald-300/70 text-sm mb-4">Creative Minds</p>
+          <button
+            onclick="vote(1)"
+            class="w-full bg-emerald-500 hover:bg-emerald-600 text-white font-semibold py-3 rounded-xl transition shadow-lg shadow-emerald-500/30 active:scale-95"
+          >
+            Vote
+          </button>
+        </div>
+
+        <div
+          class="group bg-gradient-to-br from-amber-500/20 to-amber-600/10 backdrop-blur-sm border border-amber-500/30 rounded-2xl p-6 text-center hover:border-amber-400 hover:scale-105 transition-all duration-300"
+        >
+          <div
+            class="w-16 h-16 bg-amber-500/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-amber-500/30 transition"
+          >
+            <span class="text-3xl">🟡</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-1">Team Gamma</h3>
+          <p class="text-amber-300/70 text-sm mb-4">Tech Wizards</p>
+          <button
+            onclick="vote(2)"
+            class="w-full bg-amber-500 hover:bg-amber-600 text-white font-semibold py-3 rounded-xl transition shadow-lg shadow-amber-500/30 active:scale-95"
+          >
+            Vote
+          </button>
+        </div>
+
+        <div
+          class="group bg-gradient-to-br from-rose-500/20 to-rose-600/10 backdrop-blur-sm border border-rose-500/30 rounded-2xl p-6 text-center hover:border-rose-400 hover:scale-105 transition-all duration-300"
+        >
+          <div
+            class="w-16 h-16 bg-rose-500/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-rose-500/30 transition"
+          >
+            <span class="text-3xl">🔴</span>
+          </div>
+          <h3 class="text-xl font-bold text-white mb-1">NOTA</h3>
+          <p class="text-rose-300/70 text-sm mb-4">None of the Above</p>
+          <button
+            onclick="vote(3)"
+            class="w-full bg-rose-500 hover:bg-rose-600 text-white font-semibold py-3 rounded-xl transition shadow-lg shadow-rose-500/30 active:scale-95"
+          >
+            Vote
+          </button>
+        </div>
+      </div>
+
+      <div
+        class="bg-white/5 backdrop-blur-lg border border-white/10 rounded-3xl p-6 md:p-8"
+      >
+        <div
+          class="flex flex-col md:flex-row md:items-center md:justify-between mb-6"
+        >
+          <h2 class="text-2xl font-bold text-white mb-2 md:mb-0">
+            Live Results
+          </h2>
+          <div class="flex items-center gap-2 text-purple-300">
+            <span class="text-sm">Total Votes:</span>
+            <span
+              id="totalVotes"
+              class="bg-purple-500/30 px-3 py-1 rounded-full font-bold"
+              >0</span
+            >
+          </div>
+        </div>
+
+        <div class="space-y-4 mb-8">
+          <div class="group">
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 bg-blue-500 rounded-full"></span>
+                <span class="text-white font-medium">Team Alpha</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span id="count0" class="text-white font-bold">0</span>
+                <span id="percent0" class="text-blue-400 text-sm">(0%)</span>
+              </div>
+            </div>
+            <div class="h-3 bg-slate-700/50 rounded-full overflow-hidden">
+              <div
+                id="bar0"
+                class="h-full bg-gradient-to-r from-blue-500 to-blue-400 rounded-full transition-all duration-500 ease-out"
+                style="width: 0%"
+              ></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 bg-emerald-500 rounded-full"></span>
+                <span class="text-white font-medium">Team Beta</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span id="count1" class="text-white font-bold">0</span>
+                <span id="percent1" class="text-emerald-400 text-sm">(0%)</span>
+              </div>
+            </div>
+            <div class="h-3 bg-slate-700/50 rounded-full overflow-hidden">
+              <div
+                id="bar1"
+                class="h-full bg-gradient-to-r from-emerald-500 to-emerald-400 rounded-full transition-all duration-500 ease-out"
+                style="width: 0%"
+              ></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 bg-amber-500 rounded-full"></span>
+                <span class="text-white font-medium">Team Gamma</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span id="count2" class="text-white font-bold">0</span>
+                <span id="percent2" class="text-amber-400 text-sm">(0%)</span>
+              </div>
+            </div>
+            <div class="h-3 bg-slate-700/50 rounded-full overflow-hidden">
+              <div
+                id="bar2"
+                class="h-full bg-gradient-to-r from-amber-500 to-amber-400 rounded-full transition-all duration-500 ease-out"
+                style="width: 0%"
+              ></div>
+            </div>
+          </div>
+
+          <div class="group">
+            <div class="flex justify-between items-center mb-2">
+              <div class="flex items-center gap-2">
+                <span class="w-3 h-3 bg-rose-500 rounded-full"></span>
+                <span class="text-white font-medium">NOTA</span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span id="count3" class="text-white font-bold">0</span>
+                <span id="percent3" class="text-rose-400 text-sm">(0%)</span>
+              </div>
+            </div>
+            <div class="h-3 bg-slate-700/50 rounded-full overflow-hidden">
+              <div
+                id="bar3"
+                class="h-full bg-gradient-to-r from-rose-500 to-rose-400 rounded-full transition-all duration-500 ease-out"
+                style="width: 0%"
+              ></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col sm:flex-row gap-3">
+          <button
+            onclick="showWinner()"
+            class="flex-1 bg-white hover:bg-gray-100 text-slate-900 font-bold py-3.5 px-6 rounded-xl transition shadow-lg flex items-center justify-center gap-2"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"
+              ></path>
+            </svg>
+            Declare Winner
+          </button>
+          <button
+            onclick="resetVotes()"
+            class="sm:w-auto bg-red-500/20 hover:bg-red-500/30 border border-red-500/50 text-red-400 font-semibold py-3.5 px-6 rounded-xl transition flex items-center justify-center gap-2"
+          >
+            <svg
+              class="w-5 h-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+              ></path>
+            </svg>
+            Reset
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="modal"
+      class="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 z-50 hidden"
+    >
+      <div
+        class="bg-gradient-to-br from-slate-800 to-slate-900 border border-white/10 rounded-3xl p-8 max-w-md w-full text-center transform transition-all scale-95 opacity-0"
+        id="modalContent"
+      >
+        <div
+          class="w-20 h-20 bg-gradient-to-br from-yellow-400 to-amber-500 rounded-full flex items-center justify-center mx-auto mb-6 shadow-xl shadow-amber-500/30"
+        >
+          <span class="text-4xl">🏆</span>
+        </div>
+        <h2 class="text-3xl font-bold text-white mb-2" id="winnerTitle">
+          Winner!
+        </h2>
+        <p class="text-purple-200/70 mb-6" id="winnerSubtext">
+          Congratulations to the winning team
+        </p>
+
+        <div class="bg-white/5 rounded-2xl p-6 mb-6">
+          <div
+            class="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500 mb-2"
+            id="winnerName"
+          >
+            Team Alpha
+          </div>
+          <div class="text-white/60 text-sm">
+            with
+            <span id="winnerVotes" class="text-white font-bold">0</span> votes
+            (<span id="winnerPercent" class="text-amber-400">0%</span>)
+          </div>
+        </div>
+
+        <button
+          onclick="closeModal()"
+          class="w-full bg-white/10 hover:bg-white/20 text-white font-semibold py-3 rounded-xl transition"
+        >
+          Close
+        </button>
+      </div>
+    </div>
+
+    <div
+      id="toast"
+      class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-emerald-500 text-white px-6 py-3 rounded-full font-medium shadow-xl shadow-emerald-500/30 flex items-center gap-2 opacity-0 translate-y-4 transition-all duration-300 pointer-events-none"
+    >
+      <svg
+        class="w-5 h-5"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M5 13l4 4L19 7"
+        ></path>
+      </svg>
+      <span id="toastText">Vote recorded!</span>
+    </div>
+
+    <script>
+      const teams = ["Team Alpha", "Team Beta", "Team Gamma", "NOTA"];
+      const colors = ["blue", "emerald", "amber", "rose"];
+      let votes = [0, 0, 0, 0];
+
+      function vote(index) {
+        votes[index]++;
+        updateDisplay();
+        showToast(`Voted for ${teams[index]}!`);
+      }
+
+      function updateDisplay() {
+        const total = votes.reduce((a, b) => a + b, 0);
+        document.getElementById("totalVotes").innerText = total;
+
+        votes.forEach((count, i) => {
+          const percent = total > 0 ? Math.round((count / total) * 100) : 0;
+          document.getElementById(`count${i}`).innerText = count;
+          document.getElementById(`percent${i}`).innerText = `(${percent}%)`;
+          document.getElementById(`bar${i}`).style.width = `${percent}%`;
+        });
+      }
+
+      function showWinner() {
+        const total = votes.reduce((a, b) => a + b, 0);
+        if (total === 0) {
+          showToast("No votes recorded yet!");
+          return;
+        }
+
+        const maxVotes = Math.max(...votes);
+        const winnerIndex = votes.indexOf(maxVotes);
+        const percent = Math.round((maxVotes / total) * 100);
+
+        const tied = votes.filter((v) => v === maxVotes).length > 1;
+
+        document.getElementById("winnerName").innerText = tied
+          ? "It's a Tie!"
+          : teams[winnerIndex];
+        document.getElementById("winnerVotes").innerText = maxVotes;
+        document.getElementById("winnerPercent").innerText = `${percent}%`;
+        document.getElementById("winnerSubtext").innerText = tied
+          ? "Multiple teams have the same votes"
+          : "Congratulations to the winning team";
+
+        const modal = document.getElementById("modal");
+        const modalContent = document.getElementById("modalContent");
+        modal.classList.remove("hidden");
+        setTimeout(() => {
+          modalContent.classList.remove("scale-95", "opacity-0");
+          modalContent.classList.add("scale-100", "opacity-100");
+        }, 10);
+      }
+
+      function closeModal() {
+        const modal = document.getElementById("modal");
+        const modalContent = document.getElementById("modalContent");
+        modalContent.classList.add("scale-95", "opacity-0");
+        modalContent.classList.remove("scale-100", "opacity-100");
+        setTimeout(() => {
+          modal.classList.add("hidden");
+        }, 200);
+      }
+
+      function resetVotes() {
+        votes = [0, 0, 0, 0];
+        updateDisplay();
+        showToast("Voting system reset!");
+      }
+
+      function showToast(message) {
+        const toast = document.getElementById("toast");
+        document.getElementById("toastText").innerText = message;
+        toast.classList.remove("opacity-0", "translate-y-4");
+        toast.classList.add("opacity-100", "translate-y-0");
+
+        setTimeout(() => {
+          toast.classList.add("opacity-0", "translate-y-4");
+          toast.classList.remove("opacity-100", "translate-y-0");
+        }, 2000);
+      }
+
+      updateDisplay();
+    </script>
+  </body>
+</html>
